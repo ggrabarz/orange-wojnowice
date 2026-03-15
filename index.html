@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orange Światłowód 300 Mb/s, analiza, rozmowa z infolinią i drabinka eskalacyjna</title>
+    <style>
+        :root{
+            --bg:#f6f7f9;
+            --paper:#ffffff;
+            --ink:#111827;
+            --muted:#4b5563;
+            --line:#d1d5db;
+            --soft:#eef2f7;
+            --accent:#f97316;
+            --accent-dark:#c2410c;
+            --ok:#166534;
+            --warn:#92400e;
+            --bad:#991b1b;
+            --shadow:0 12px 34px rgba(17,24,39,.08);
+            --radius:18px;
+            --max:1080px;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body{
+            margin:0;
+            font-family: Arial, Helvetica, sans-serif;
+            color:var(--ink);
+            background:
+                    radial-gradient(circle at top left, #fff5eb 0, #fff5eb 12rem, transparent 12rem),
+                    linear-gradient(180deg, #fafafa 0%, var(--bg) 100%);
+            line-height:1.6;
+        }
+
+        a{ color:var(--accent-dark); text-decoration-thickness: 1.5px; }
+        a:hover{ text-decoration-thickness: 2px; }
+
+        .page{
+            max-width:var(--max);
+            margin:0 auto;
+            padding:24px;
+        }
+
+        .hero{
+            background:var(--paper);
+            border:1px solid rgba(17,24,39,.08);
+            border-radius:calc(var(--radius) + 6px);
+            box-shadow:var(--shadow);
+            overflow:hidden;
+        }
+
+        .hero-top{
+            background:linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            color:#fff;
+            padding:28px 28px 22px;
+        }
+
+        .eyebrow{
+            display:inline-block;
+            font-size:.86rem;
+            letter-spacing:.04em;
+            text-transform:uppercase;
+            color:#fed7aa;
+            margin-bottom:10px;
+            font-weight:700;
+        }
+
+        h1{
+            margin:0 0 10px;
+            font-size:clamp(1.75rem, 2vw + 1.1rem, 2.8rem);
+            line-height:1.15;
+        }
+
+        .lead{
+            margin:0;
+            max-width:72ch;
+            color:#e5e7eb;
+            font-size:1.05rem;
+        }
+
+        .hero-body{
+            padding:22px 28px 28px;
+        }
+
+        .meta{
+            display:grid;
+            grid-template-columns:repeat(3, minmax(0,1fr));
+            gap:14px;
+            margin:0 0 20px;
+        }
+
+        .meta .card{
+            background:var(--soft);
+            border:1px solid #e5e7eb;
+            border-radius:14px;
+            padding:14px 16px;
+        }
+
+        .meta .label{
+            display:block;
+            font-size:.82rem;
+            color:var(--muted);
+            margin-bottom:4px;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:.03em;
+        }
+
+        .meta .value{
+            font-size:1rem;
+            font-weight:700;
+        }
+
+        .toolbar{
+            display:flex;
+            flex-wrap:wrap;
+            gap:12px;
+            align-items:center;
+            justify-content:space-between;
+            border-top:1px solid var(--line);
+            padding-top:18px;
+        }
+
+        .toc{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+        }
+
+        .toc a, .print-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            min-height:42px;
+            padding:10px 14px;
+            border-radius:999px;
+            border:1px solid #d6d3d1;
+            background:#fff;
+            text-decoration:none;
+            color:var(--ink);
+            font-weight:700;
+            font-size:.95rem;
+        }
+
+        .toc a:hover, .print-btn:hover{
+            border-color:#fdba74;
+            background:#fff7ed;
+        }
+
+        .print-btn{
+            cursor:pointer;
+        }
+
+        main{
+            margin-top:24px;
+            display:grid;
+            gap:22px;
+        }
+
+        section{
+            background:var(--paper);
+            border:1px solid rgba(17,24,39,.08);
+            border-radius:var(--radius);
+            box-shadow:var(--shadow);
+            padding:26px;
+        }
+
+        h2{
+            margin:0 0 10px;
+            font-size:clamp(1.35rem, 1.5vw + .8rem, 2rem);
+            line-height:1.2;
+        }
+
+        h3{
+            margin:22px 0 8px;
+            font-size:1.12rem;
+            line-height:1.3;
+        }
+
+        p{ margin:10px 0 0; }
+        ul, ol{ margin:10px 0 0 1.2rem; }
+        li + li{ margin-top:8px; }
+
+        .notice{
+            margin-top:16px;
+            border-left:5px solid var(--accent);
+            background:#fff7ed;
+            border-radius:12px;
+            padding:14px 16px;
+        }
+
+        .okbox, .warnbox, .badbox, .infobox{
+            margin-top:16px;
+            border-radius:14px;
+            padding:15px 16px;
+            border:1px solid transparent;
+        }
+
+        .okbox{
+            background:#ecfdf3;
+            border-color:#bbf7d0;
+        }
+
+        .warnbox{
+            background:#fffbeb;
+            border-color:#fde68a;
+        }
+
+        .badbox{
+            background:#fef2f2;
+            border-color:#fecaca;
+        }
+
+        .infobox{
+            background:#eff6ff;
+            border-color:#bfdbfe;
+        }
+
+        .grid-2{
+            display:grid;
+            grid-template-columns:repeat(2, minmax(0,1fr));
+            gap:18px;
+            margin-top:18px;
+        }
+
+        .mini{
+            border:1px solid #e5e7eb;
+            border-radius:14px;
+            padding:16px;
+            background:#fcfcfd;
+        }
+
+        .mini h3{
+            margin-top:0;
+        }
+
+        .dialog{
+            margin-top:18px;
+            display:grid;
+            gap:14px;
+        }
+
+        .line{
+            border:1px solid #e5e7eb;
+            border-radius:16px;
+            padding:14px 16px;
+            background:#fcfcfd;
+        }
+
+        .speaker{
+            display:inline-block;
+            font-weight:800;
+            font-size:.92rem;
+            letter-spacing:.02em;
+            margin-bottom:6px;
+        }
+
+        .speaker.customer{ color:#7c2d12; }
+        .speaker.agent{ color:#1d4ed8; }
+        .speaker.note{ color:#374151; }
+
+        .steps{
+            counter-reset:step;
+            list-style:none;
+            margin:16px 0 0;
+            padding:0;
+            display:grid;
+            gap:14px;
+        }
+
+        .steps li{
+            counter-increment:step;
+            border:1px solid #e5e7eb;
+            border-radius:16px;
+            padding:16px 16px 16px 64px;
+            position:relative;
+            background:#fcfcfd;
+        }
+
+        .steps li::before{
+            content:counter(step);
+            position:absolute;
+            left:16px;
+            top:16px;
+            width:34px;
+            height:34px;
+            border-radius:50%;
+            background:var(--accent);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:800;
+        }
+
+        .quote{
+            margin-top:14px;
+            padding:14px 16px;
+            background:#f8fafc;
+            border-left:4px solid #94a3b8;
+            border-radius:12px;
+            color:#0f172a;
+        }
+
+        .refs{
+            margin-top:18px;
+            padding-top:8px;
+            border-top:1px solid var(--line);
+        }
+
+        .refs ol{
+            margin-left:1.2rem;
+        }
+
+        .muted{
+            color:var(--muted);
+        }
+
+        sup a{
+            text-decoration:none;
+            font-weight:700;
+        }
+
+        footer{
+            margin:22px 0 8px;
+            color:var(--muted);
+            font-size:.95rem;
+            text-align:center;
+        }
+
+        @media (max-width: 800px){
+            .page{ padding:14px; }
+            .hero-top, .hero-body, section{ padding:20px; }
+            .meta{ grid-template-columns:1fr; }
+            .grid-2{ grid-template-columns:1fr; }
+            .toolbar{ align-items:flex-start; }
+        }
+
+        @media print{
+            :root{
+                --bg:#fff;
+                --paper:#fff;
+                --ink:#000;
+                --muted:#333;
+                --line:#bbb;
+                --soft:#f6f6f6;
+                --accent:#000;
+                --accent-dark:#000;
+                --shadow:none;
+            }
+            body{
+                background:#fff;
+                font-size:11.5pt;
+            }
+            .page{
+                max-width:none;
+                padding:0;
+            }
+            .hero, section{
+                box-shadow:none;
+                break-inside:avoid;
+                page-break-inside:avoid;
+            }
+            .hero-top{
+                background:#fff !important;
+                color:#000 !important;
+                border-bottom:1px solid #bbb;
+            }
+            .lead{ color:#222 !important; }
+            .print-btn, .toc{
+                display:none !important;
+            }
+            a{
+                color:#000 !important;
+                text-decoration:underline;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header class="hero">
+        <div class="hero-top">
+            <div class="eyebrow">Materiał pomocniczy do rozmowy z operatorem</div>
+            <h1>Orange Światłowód do 300 Mb/s, analiza problemu, rozmowa z infolinią i drabinka eskalacyjna</h1>
+            <p class="lead">
+                Dokument przygotowany w oparciu o publicznie dostępne źródła Orange, UKE i internet.gov.pl.
+                Treść jest celowo napisana prostym językiem, ale bez infantylizacji. Ma pomóc osobie nietechnicznej
+                skutecznie zgłosić problem i nie dać się zbyć ogólnikami.
+            </p>
+        </div>
+        <div class="hero-body">
+            <div class="meta">
+                <div class="card">
+                    <span class="label">Założenie robocze</span>
+                    <span class="value">Usługa to Orange Światłowód do 300 Mb/s</span>
+                </div>
+                <div class="card">
+                    <span class="label">Adres kontekstu</span>
+                    <span class="value">Powstańców Śląskich 3, 47-475 Wojnowice</span>
+                </div>
+                <div class="card">
+                    <span class="label">Stan na dzień</span>
+                    <span class="value">15.03.2026</span>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <nav class="toc" aria-label="Spis treści">
+                    <a href="#sekcja-1">1. Dlaczego wyjaśnienie technika budzi zastrzeżenia</a>
+                    <a href="#sekcja-2">2. Przykładowa rozmowa z infolinią</a>
+                    <a href="#sekcja-3">3. Drabinka eskalacyjna</a>
+                    <a href="#zrodla">Źródła</a>
+                </nav>
+                <button class="print-btn" onclick="window.print()">Drukuj / Zapisz do PDF</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="sekcja-1">
+            <h2>1. Dlaczego wyjaśnienie technika budzi zastrzeżenia</h2>
+
+            <p>
+                Jeśli usługa jest rzeczywiście sprzedana jako <strong>Orange Światłowód</strong>, to według oficjalnych materiałów Orange chodzi o
+                <strong>FTTH, Fiber to the Home</strong>, czyli światłowód doprowadzony <strong>bezpośrednio do mieszkania lub domu</strong>.<sup><a href="#src-1">[1]</a></sup>
+                Orange opisuje tę usługę jako bardzo stabilną, odporną na pogodę i pozbawioną typowych zakłóceń zewnętrznych,
+                a w poradniku FTTH pisze też, że światłowód podłączany jest bezpośrednio do modemu, a nie tylko do budynku.<sup><a href="#src-1">[1]</a></sup><sup><a href="#src-2">[2]</a></sup>
+            </p>
+
+            <div class="okbox">
+                <strong>Najważniejszy wniosek:</strong> jeżeli problem dotyczy samego łącza FTTH, to wyjaśnienie w stylu
+                „to przez drzewa i zakłócenia radiowe” jest bardzo słabo wiarygodne w świetle publicznych opisów tej usługi.<sup><a href="#src-1">[1]</a></sup><sup><a href="#src-2">[2]</a></sup>
+            </div>
+
+            <h3>Co publicznie potwierdza Orange</h3>
+            <div class="grid-2">
+                <div class="mini">
+                    <h3>FTTH do lokalu</h3>
+                    <p>
+                        Orange wprost wskazuje, że światłowód w tej ofercie jest doprowadzony bezpośrednio do mieszkania lub domu,
+                        czyli do lokalu abonenta, a nie tylko do budynku.<sup><a href="#src-1">[1]</a></sup><sup><a href="#src-2">[2]</a></sup>
+                    </p>
+                </div>
+                <div class="mini">
+                    <h3>Rozdzielenie problemu łącza od problemu Wi‑Fi</h3>
+                    <p>
+                        Orange opisuje też osobno problemy z Wi‑Fi. Tam przyczyną spadków mogą być ściany, odległość od routera,
+                        sąsiednie sieci, parametry telefonu lub laptopa oraz inne zakłócenia radiowe w domu lub w okolicy.<sup><a href="#src-3">[3]</a></sup>
+                    </p>
+                </div>
+            </div>
+
+            <h3>Dlaczego to rozróżnienie jest ważne</h3>
+            <p>
+                W potocznej rozmowie bardzo łatwo pomylić <strong>„internet od operatora”</strong> z <strong>„Wi‑Fi w domu”</strong>.
+                To nie jest to samo. Operator może mieć stabilne łącze FTTH do routera, a użytkownik może jednocześnie mieć
+                niestabilne Wi‑Fi między routerem a telefonem albo telewizorem. Orange samo wyjaśnia, że realna prędkość po Wi‑Fi
+                zależy od bardzo wielu czynników, w tym od przeszkód i środowiska radiowego.<sup><a href="#src-3">[3]</a></sup>
+            </p>
+
+            <div class="warnbox">
+                <strong>Uczciwe doprecyzowanie:</strong> publiczne checkery dostępności, w tym internet.gov.pl, pokazują,
+                czy pod adresem jest stacjonarny internet szerokopasmowy, ale nie pokazują pełnej topologii sieci operatora.
+                Innymi słowy, z publicznych danych nie da się rzetelnie odtworzyć całej ścieżki transmisji w sieci Orange dla konkretnego abonenta.<sup><a href="#src-7">[7]</a></sup>
+            </div>
+
+            <p>
+                To oznacza, że nie da się publicznie i z pełną pewnością udowodnić każdego fragmentu sieci szkieletowej lub transportowej.
+                Da się natomiast uczciwie powiedzieć coś innego: <strong>nie ma publicznego dowodu</strong>, że dla tego konkretnego adresu
+                operator używa na ścieżce usługi segmentu radiowego, a oficjalny opis usługi dostępnej dla klienta mówi o FTTH do lokalu.<sup><a href="#src-1">[1]</a></sup><sup><a href="#src-2">[2]</a></sup><sup><a href="#src-7">[7]</a></sup>
+            </p>
+
+            <h3>Najbardziej wyważony wniosek</h3>
+            <div class="badbox">
+                <p>
+                    Jeżeli technik twierdził, że niestabilność <strong>samego światłowodu</strong> wynika z drzew i zakłóceń radiowych,
+                    to taka wypowiedź wygląda na <strong>co najmniej nierzetelną</strong>. Jeżeli mówił o <strong>Wi‑Fi w domu</strong>,
+                    to wątek radiowy może mieć sens, ale wtedy powinien to jasno rozróżnić i nie przedstawiać tego tak,
+                    jakby problem dotyczył samego łącza FTTH.<sup><a href="#src-3">[3]</a></sup>
+                </p>
+            </div>
+
+            <div class="notice">
+                <strong>Prosta formuła do zapamiętania:</strong> „Proszę rozdzielić problem łącza światłowodowego od problemu Wi‑Fi.
+                Chcę wiedzieć, czy awaria dotyczy usługi operatora, czy tylko połączenia bezprzewodowego w domu.”
+            </div>
+        </section>
+
+        <section id="sekcja-2">
+            <h2>2. Przykładowa rozmowa z infolinią</h2>
+
+            <p>
+                Poniżej jest gotowy scenariusz rozmowy. Bohaterką jest kobieta około 60 lat, bez wykształcenia technicznego,
+                ale spokojna, uważna i konsekwentna. Nie udaje specjalistki, tylko bardzo rozsądnie pilnuje, żeby konsultant
+                nie zbył sprawy ogólnikami.
+            </p>
+
+            <div class="infobox">
+                <strong>Cel rozmowy:</strong> zgłosić problem skutecznie, uzyskać numer zgłoszenia, wymusić jasne odróżnienie
+                problemu z Wi‑Fi od problemu z usługą światłowodową, poprosić o diagnostykę po stronie Orange i mieć podstawę
+                do ewentualnej reklamacji.
+            </div>
+
+            <div class="dialog" aria-label="Przykładowa rozmowa z infolinią">
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Dzień dobry. Chciałabym zgłosić problem z internetem domowym. Mam u Państwa Orange Światłowód do 300 Mb/s
+                        i od pewnego czasu internet działa niestabilnie. Zrywa, zwalnia albo chwilowo przestaje działać.
+                        Chciałabym zgłosić awarię i dostać numer zgłoszenia.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        Oczywiście. Czy problem występuje cały czas czy okresowo?
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Okresowo, ale na tyle często, że utrudnia zwykłe korzystanie z internetu. Chciałabym, żebyśmy od razu ustalili,
+                        czy mówimy o problemie z samą usługą światłowodową, czy tylko o Wi‑Fi w domu.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        Proszę opisać, co się dzieje.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Internet bywa niestabilny na różnych urządzeniach. Chcę, żeby to zostało zapisane w zgłoszeniu. Chcę też,
+                        żeby sprawdzili Państwo po swojej stronie parametry usługi i ewentualne awarie na linii.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker note">Uwaga praktyczna</div>
+                    <div>
+                        W tym miejscu nie trzeba podawać fachowych nazw. Ważne jest, żeby padły słowa:
+                        <strong>„proszę sprawdzić po Państwa stronie parametry usługi”</strong> oraz
+                        <strong>„proszę o numer zgłoszenia”</strong>.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        To może być problem z zakłóceniami w domu albo z otoczeniem.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Rozumiem, że Wi‑Fi może mieć swoje ograniczenia. Ale ja chcę wyraźnie rozdzielić dwie rzeczy:
+                        po pierwsze, czy usługa Orange Światłowód działa prawidłowo do routera, a po drugie, czy jest osobny problem z Wi‑Fi.
+                        Proszę mi powiedzieć, co wynika z Państwa diagnostyki po stronie operatora.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        Proszę zrestartować router.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Mogę to zrobić, ale sam restart nie zamyka sprawy. Chcę, żeby w zgłoszeniu było zapisane,
+                        że problem występuje od dłuższego czasu i że proszę o sprawdzenie usługi po stronie Orange.
+                        Proszę też odnotować, czy widzą Państwo błędy, rozłączenia albo spadki jakości połączenia.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        A czy problem jest po Wi‑Fi?
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Właśnie to chcę ustalić. Jeżeli Państwo twierdzą, że problem jest tylko po Wi‑Fi,
+                        to proszę to jasno powiedzieć i zapisać. Jeżeli natomiast widzą Państwo problem po stronie usługi,
+                        to proszę zgłosić awarię techniczną. Chcę wiedzieć, którą z tych dwóch wersji Państwo potwierdzają.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        Technik wspominał, że wpływ mogą mieć drzewa i zakłócenia radiowe.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Proszę w takim razie precyzyjnie powiedzieć, czy dotyczy to Wi‑Fi w moim domu, czy samej usługi Orange Światłowód.
+                        Jeśli to dotyczy samej usługi, proszę wpisać do zgłoszenia podstawę tej informacji i poproszę o potwierdzenie na piśmie
+                        albo w wiadomości po zgłoszeniu. Nie chcę ogólnego wyjaśnienia, tylko konkretną informację, co dokładnie zostało stwierdzone.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker note">Dlaczego to działa</div>
+                    <div>
+                        To nie jest agresywne, ale zmusza konsultanta do rozdzielenia dwóch pojęć:
+                        <strong>problem usługi operatora</strong> i <strong>problem domowego Wi‑Fi</strong>.
+                        Właśnie na tym najczęściej rozmywa się odpowiedzialność.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        Mogę założyć zgłoszenie.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Dobrze. Proszę o numer zgłoszenia, datę przyjęcia, przewidywany termin odpowiedzi i krótkie podsumowanie,
+                        jak problem został opisany. Chciałabym też wiedzieć, czy po tej rozmowie mam coś jeszcze zrobić,
+                        czy teraz ruch jest po Państwa stronie.
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker agent">Konsultant</div>
+                    <div>
+                        Numer zgłoszenia to…
+                    </div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker customer">Klientka</div>
+                    <div>
+                        Dziękuję. Zapiszę sobie numer. Jeżeli problem będzie się powtarzał albo sprawa nie zostanie rzetelnie wyjaśniona,
+                        złożę reklamację na piśmie. Proszę to także odnotować.
+                    </div>
+                </div>
+            </div>
+
+            <h3>Krótka wersja, gdy klientka się stresuje</h3>
+            <div class="quote">
+                Dzień dobry. Mam Orange Światłowód do 300 Mb/s i internet działa niestabilnie.
+                Chcę zgłosić awarię i dostać numer zgłoszenia. Proszę wyraźnie rozdzielić,
+                czy problem dotyczy samej usługi światłowodowej, czy tylko Wi‑Fi w domu.
+                Proszę sprawdzić usługę po Państwa stronie i powiedzieć mi, co konkretnie Państwo widzą.
+                Jeśli twierdzą Państwo, że to tylko Wi‑Fi, proszę to jasno zapisać. Jeśli to problem po stronie usługi,
+                proszę założyć zgłoszenie techniczne.
+            </div>
+
+            <h3>Czego nie mówić</h3>
+            <ul>
+                <li>Nie warto zaczynać od bardzo technicznych nazw, jeśli nie ma się pewności, co znaczą.</li>
+                <li>Nie warto kłócić się o fizykę na początku rozmowy. Lepiej najpierw wymusić konkretną diagnozę i numer zgłoszenia.</li>
+                <li>Nie warto dawać się wciągać w luźne sugestie typu „to pewnie przez otoczenie”, jeśli konsultant nie wyjaśnia, czy mówi o Wi‑Fi, czy o samej usłudze.</li>
+            </ul>
+        </section>
+
+        <section id="sekcja-3">
+            <h2>3. Analiza możliwych działań, czyli drabinka eskalacyjna</h2>
+
+            <p>
+                Poniżej jest legalna i rozsądna ścieżka działania. Nie chodzi o „odwet” w sensie emocjonalnym,
+                tylko o uporządkowane dochodzenie swoich praw i zbudowanie mocnej dokumentacji. UKE podaje,
+                że reklamację można złożyć pisemnie, ustnie, telefonicznie lub elektronicznie, a operator ma
+                30 dni na odpowiedź. Brak odpowiedzi w terminie oznacza uwzględnienie reklamacji.<sup><a href="#src-4">[4]</a></sup>
+            </p>
+
+            <ol class="steps">
+                <li>
+                    <strong>Zabezpiecz fakty.</strong><br>
+                    Zapisuj daty, godziny i objawy. Zrób kilka zrzutów ekranu z testów, zapisz numery zgłoszeń,
+                    notuj nazwiska konsultantów lub przynajmniej datę i godzinę rozmowy. Im mniej emocji, a więcej konkretu,
+                    tym lepiej.
+                </li>
+                <li>
+                    <strong>Zgłoś problem techniczny i wymuś jasny opis.</strong><br>
+                    W każdej rozmowie proś o rozdzielenie problemu „usługa operatora” od problemu „Wi‑Fi w domu”.
+                    Proś o numer zgłoszenia i o to, by opis problemu został odczytany lub przesłany.
+                </li>
+                <li>
+                    <strong>Złóż reklamację do Orange.</strong><br>
+                    UKE wskazuje, że masz 12 miesięcy na złożenie reklamacji. W reklamacji należy opisać, co jest reklamowane,
+                    za jaki okres, jakie są okoliczności i czego się domagasz, na przykład rzetelnej diagnostyki, usunięcia usterki,
+                    wyjaśnienia przyczyn oraz ewentualnego odszkodowania lub obniżenia opłat, jeśli wynika to z regulaminu i skali problemu.<sup><a href="#src-4">[4]</a></sup>
+                </li>
+                <li>
+                    <strong>Jeśli reklamacja zostanie odrzucona, rozważ ADR w UKE.</strong><br>
+                    UKE prowadzi postępowania ADR po wcześniejszej reklamacji. To ścieżka dla konsumenta, dobrowolna dla obu stron,
+                    a średni czas postępowania według UKE to 21 dni, przy formalnym limicie 90 dni, z możliwością wydłużenia w sprawach bardziej złożonych.<sup><a href="#src-6">[6]</a></sup>
+                </li>
+                <li>
+                    <strong>Jeśli podejrzewasz naruszenie przepisów lub nierzetelne traktowanie, złóż wniosek o interwencję do UKE.</strong><br>
+                    UKE wyraźnie wskazuje, że interwencja nie jest drugą reklamacją. To postępowanie wyjaśniające,
+                    do którego warto dołączyć dokumentację z zakończonej reklamacji u operatora.<sup><a href="#src-5">[5]</a></sup>
+                </li>
+                <li>
+                    <strong>Jeżeli sprawa dalej nie zostanie rozwiązana, pozostaje droga sądowa.</strong><br>
+                    UKE wprost wskazuje, że po reklamacji i niezależnie od ADR pozostaje możliwość dochodzenia roszczeń przed sądem powszechnym.<sup><a href="#src-4">[4]</a></sup><sup><a href="#src-6">[6]</a></sup>
+                </li>
+            </ol>
+
+            <h3>Jak napisać ton reklamacji</h3>
+            <p>
+                Najlepiej spokojnie, konkretnie i bez obrażania kogokolwiek. Zamiast pisać „technik kłamał”,
+                lepiej napisać: <em>„przekazane mi ustnie wyjaśnienie było niejednoznaczne i nie pozwala ustalić,
+                czy problem dotyczy samej usługi FTTH, czy tylko domowej sieci Wi‑Fi; wnoszę o jednoznaczne,
+                pisemne stanowisko oraz o wskazanie podstaw diagnostycznych”</em>.
+            </p>
+
+            <div class="warnbox">
+                <strong>Bardzo ważne:</strong> internet.gov.pl jest publiczną bazą informacyjną o dostępie do internetu stacjonarnego,
+                ale nie służy do udowadniania pełnej architektury sieci operatora. Można z niej korzystać do weryfikacji dostępności usługi pod adresem,
+                ale nie jako dowodu na szczegóły topologii sieci.<sup><a href="#src-7">[7]</a></sup>
+            </div>
+
+            <h3>Krótka drabinka w jednym akapicie</h3>
+            <div class="quote">
+                Najpierw numer zgłoszenia i twarde rozdzielenie „usługa FTTH” od „Wi‑Fi”. Potem reklamacja do Orange.
+                Jeśli reklamacja będzie nieskuteczna albo nierzetelna, następnie ADR w UKE, a przy podejrzeniu naruszenia praw także interwencja UKE.
+                Jeśli to nie pomoże, zostaje sąd powszechny.<sup><a href="#src-4">[4]</a></sup><sup><a href="#src-5">[5]</a></sup><sup><a href="#src-6">[6]</a></sup>
+            </div>
+        </section>
+
+        <section id="zrodla">
+            <h2>Źródła</h2>
+            <p class="muted">
+                Poniższe źródła są publiczne i zostały dobrane tak, by nie opierać się na domysłach.
+                W treści powyżej odwołania oznaczone są numerami w nawiasach kwadratowych.
+            </p>
+
+            <div class="refs">
+                <ol>
+                    <li id="src-1">
+                        <strong>Orange, „Internet domowy - Orange Światłowód do 8 Gb/s”</strong>,
+                        informacje o FTTH, doprowadzeniu światłowodu bezpośrednio do mieszkania lub domu, stabilności i odporności na pogodę.<br>
+                        <a href="https://www.orange.pl/internet/internet-domowy">https://www.orange.pl/internet/internet-domowy</a>
+                    </li>
+                    <li id="src-2">
+                        <strong>Orange, „Aktualny zasięg światłowodu Orange FTTH”</strong>,
+                        definicja FTTH, przesyłanie danych za pomocą fali świetlnej, podłączenie bezpośrednio do modemu.<br>
+                        <a href="https://www.orange.pl/poradnik/aktualny-zasieg-swiatlowodu-orange-ftth/">https://www.orange.pl/poradnik/aktualny-zasieg-swiatlowodu-orange-ftth/</a>
+                    </li>
+                    <li id="src-3">
+                        <strong>Orange, „Wolny internet Wi‑Fi – gdzie jest problem?”</strong>,
+                        omówienie przyczyn problemów z Wi‑Fi, w tym odległości, przeszkód, sąsiednich sieci i parametrów urządzeń.<br>
+                        <a href="https://www.orange.pl/poradnik/wolny-internet-wi-fi-gdzie-jest-problem/">https://www.orange.pl/poradnik/wolny-internet-wi-fi-gdzie-jest-problem/</a>
+                    </li>
+                    <li id="src-4">
+                        <strong>UKE, Centrum Informacji Konsumenckiej, „Reklamacje”</strong>,
+                        zasady reklamacji, 12 miesięcy na złożenie reklamacji, 30 dni na odpowiedź, skutek braku odpowiedzi w terminie.<br>
+                        <a href="https://cik.uke.gov.pl/uslugi-teleko/dochodzenie-roszczen/">https://cik.uke.gov.pl/uslugi-teleko/dochodzenie-roszczen/</a>
+                    </li>
+                    <li id="src-5">
+                        <strong>UKE, Centrum Informacji Konsumenckiej, „Interwencje”</strong>,
+                        postępowanie wyjaśniające, wymóg dołączenia dokumentacji z zakończonego postępowania reklamacyjnego, brak charakteru „drugiej reklamacji”.<br>
+                        <a href="https://cik.uke.gov.pl/uslugi-teleko/dochodzenie-roszczen/interwencje/">https://cik.uke.gov.pl/uslugi-teleko/dochodzenie-roszczen/interwencje/</a>
+                    </li>
+                    <li id="src-6">
+                        <strong>UKE, Centrum Informacji Konsumenckiej, „Przebieg postępowania ADR”</strong>,
+                        wcześniejsza reklamacja jako warunek, konsumencki charakter postępowania, dobrowolność, 90 dni, średnio 21 dni.<br>
+                        <a href="https://cik.uke.gov.pl/uslugi-teleko/dochodzenie-roszczen/pozasadowe-rozwiazywanie-sporow-adr-tresc/przebieg-postepowania,6.html">https://cik.uke.gov.pl/uslugi-teleko/dochodzenie-roszczen/pozasadowe-rozwiazywanie-sporow-adr-tresc/przebieg-postepowania,6.html</a>
+                    </li>
+                    <li id="src-7">
+                        <strong>internet.gov.pl, mapa publicznej bazy danych o dostępie do stacjonarnego internetu szerokopasmowego</strong>,
+                        źródło informacyjne o dostępności usług pod adresem, nie o pełnej topologii sieci operatora.<br>
+                        <a href="https://internet.gov.pl/map/">https://internet.gov.pl/map/</a>
+                    </li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Dokument ma charakter informacyjny i pomocniczy. Nie zastępuje porady prawnej ani ekspertyzy technicznej na miejscu.
+    </footer>
+</div>
+</body>
+</html>
